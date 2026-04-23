@@ -1,0 +1,36 @@
+names:
+- Excavator
+- Ladder
+- Mask
+- NO-Hardhat
+- NO-Mask
+- NO-Safety Vest
+- SUV
+- Safety Cone
+- bus
+- dump truck
+- fire hydrant
+- gloves
+- helmet
+- machinery
+- mini-van
+- sedan
+- semi
+- trailer
+- truck
+- truck and trailer
+- van
+- vehicle
+- vest
+- wheel loader
+- worker
+nc: 25
+roboflow:
+  license: CC BY 4.0
+  project: epp3
+  url: https://universe.roboflow.com/juans-workspace-agc9e/epp3/dataset/1
+  version: 1
+  workspace: juans-workspace-agc9e
+test: ../test/images
+train: ../train/images
+val: ../valid/images
