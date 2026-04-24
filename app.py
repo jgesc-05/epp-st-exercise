@@ -3,10 +3,11 @@ import importlib
 
 from PIL import Image
 
-import streamlit as st
-import cv2 as cv
-from ultralytics import YOLO
 
+
+import streamlit as st
+from ultralytics import YOLO
+import cv2 as cv
 
 st.set_page_config(
     page_title="Detección PPE",
