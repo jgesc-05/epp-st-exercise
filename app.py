@@ -3,8 +3,9 @@ import importlib
 
 from PIL import Image
 
-st = importlib.import_module("streamlit")
-YOLO = importlib.import_module("ultralytics").YOLO
+import streamlit as st
+import cv2 as cv
+from ultralytics import YOLO
 
 
 st.set_page_config(
