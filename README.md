@@ -12,25 +12,16 @@ La aplicación permite cargar una imagen o tomar una foto directamente desde la 
 
 ## Clases detectadas
 
-El dataset cuenta con 25 clases en total, pero **solo algunas son relevantes para la detección de EPP**. Las clases realmente utilizadas en el contexto de seguridad personal son:
+El dataset contiene 25 clases en total, pero el modelo entrenado detecta principalmente las siguientes clases de EPP:
 
 | Clase | Descripción |
 |---|---|
-| Hardhat | Casco de seguridad presente |
-| NO-Hardhat | Persona sin casco |
-| Safety Vest | Chaleco reflectante presente |
-| NO-Safety Vest | Persona sin chaleco |
-| Mask | Mascarilla presente |
-| NO-Mask | Persona sin mascarilla |
-| Gloves | Guantes de protección |
-| Safety Cone | Cono de seguridad |
-| Worker | Trabajador identificado |
+| helmet | Casco de seguridad |
+| vest | Chaleco reflectante |
+| gloves | Guantes de protección |
+| worker | Trabajador identificado |
 
-Las demás clases del dataset corresponden a vehículos y maquinaria (excavadoras, camiones, buses, etc.) que no son el foco principal de la aplicación.
-
-### ⚠️ Limitación conocida
-
-El modelo **no detecta gafas de seguridad (safety glasses/goggles)**, ya que esta clase no fue incluida en el dataset de entrenamiento. Se reconoce como una mejora pendiente para futuras versiones.
+Las demás clases del dataset (vehículos, maquinaria, conos, mascarillas, etc.) no son el foco principal del modelo en su estado actual. Adicionalmente, las **gafas de seguridad** no fueron incluidas en el dataset de entrenamiento, por lo que tampoco son detectadas.
 
 ## Requisitos
 
