@@ -26,10 +26,6 @@ Las demás clases del dataset (vehículos, maquinaria, conos, mascarillas, etc.)
 ## Requisitos
 
 - Python 3.10+
-- Dependencias del sistema (ver `packages.txt`):
-  ```
-  libgl1
-  ```
 - Dependencias Python (ver `requirements.txt`):
   ```
   streamlit
@@ -37,25 +33,6 @@ Las demás clases del dataset (vehículos, maquinaria, conos, mascarillas, etc.)
   lap
   ultralytics==8.4.41
   ```
-
-## Instalación
-
-```bash
-# 1. Clonar el repositorio
-git clone https://github.com/jgesc-05/epp-st-exercise.git
-cd epp-st-exercise
-
-# 2. (Opcional) Crear y activar entorno virtual
-python -m venv .venv
-source .venv/bin/activate  # Linux/Mac
-.venv\Scripts\activate     # Windows
-
-# 3. Instalar dependencias del sistema (Linux)
-sudo apt-get install -y libgl1
-
-# 4. Instalar dependencias Python
-pip install -r requirements.txt
-```
 
 ## Uso
 
