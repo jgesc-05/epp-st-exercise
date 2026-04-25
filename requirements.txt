@@ -1,4 +1,3 @@
 streamlit
-streamlit-webrct
 opencv-python-headless>=4.8.0
 ultralytics
