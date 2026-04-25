@@ -8,6 +8,8 @@ from PIL import Image
 import streamlit as st
 from ultralytics import YOLO
 import cv2 as cv
+from streamlit_webrtc import webrtc_streamer, VideoTransformerBase
+import av
 
 st.set_page_config(
     page_title="Detección PPE",
@@ -51,6 +53,24 @@ def get_detected_items(result) -> list[dict]:
     return items
 
 
+class VideoProcessor(VideoTransformerBase):
+    def __init__(self):
+        self.model = get_model()
+
+    def recv(self, frame):
+        # 1. Convertir el frame de video a un array de numpy (BGR para OpenCV/YOLO)
+        img = frame.to_ndarray(format="bgr24")
+
+        # 2. Realizar la detección
+        # Usamos stream=True para optimizar el uso de memoria en video
+        results = self.model.predict(img, imgsz=640, conf=0.25, verbose=False)
+
+        # 3. Dibujar las anotaciones en el frame
+        annotated_frame = results[0].plot()
+
+        # 4. Devolver el frame procesado al stream de video
+        return av.VideoFrame.from_ndarray(annotated_frame, format="bgr24")
+
 
 
 st.markdown("# Detección de elementos de protección personal (PPE)")
@@ -76,25 +96,19 @@ if option == "Cargar imagen":
 # ... (tu código anterior de carga de modelo y detección)
 
 if option == "En vivo":
-    st.write("Haz clic en el botón de abajo para capturar y analizar frames.")
-    img_file_buffer = st.camera_input("Streaming de detección")
+    st.subheader("Streaming de Cámara Web")
+    st.write("El modelo está procesando el video fotograma a fotograma.")
 
-    if img_file_buffer is not None:
-        # Convertir a imagen PIL
-        live_img = load_image(img_file_buffer)
-
-        # Ejecutar detección
-        with st.spinner("Procesando frame..."):
-            res = detect(live_img)
-            annotated_frame = res.plot()
-
-            # Mostrar resultado
-            st.image(annotated_frame, channels="BGR", use_container_width=True)
-
-            # Mostrar lista de objetos detectados
-            items = get_detected_items(res)
-            if items:
-                st.success(f"Detección actual: {', '.join([i['clase'] for i in items])}")
+    webrtc_streamer(
+        key="yolo-live",
+        video_processor_factory=VideoProcessor,
+        # Configuración para que funcione en servidores externos (STUN servers)
+        rtc_configuration={
+            "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]
+        },
+        # Esto asegura que el formato sea el correcto para el procesamiento
+        media_stream_constraints={"video": True, "audio": False},
+    )
 else:
     camera_file = st.camera_input("Toma una foto")
     if camera_file is not None:
