@@ -19,7 +19,7 @@ BASE_DIR = Path(__file__).resolve().parent
 MODEL_PATH = BASE_DIR / "runs" / "detect" / "train-3" / "weights" / "best.pt"
 
 
-@st.cache_resource(show_spinner="Cargando modelo...")
+
 def load_model():
     return YOLO(str(MODEL_PATH))
 
@@ -60,7 +60,7 @@ st.divider()
 st.subheader("1. Selector o capturador de imagen")
 option = st.radio(
     "Elige cómo quieres ingresar la imagen:",
-    ("Cargar imagen", "Tomar foto"),
+    ("Cargar imagen", "Tomar foto", "En vivo"),
     horizontal=True,
 )
 
@@ -73,6 +73,28 @@ if option == "Cargar imagen":
     )
     if uploaded_file is not None:
         uploaded_image = load_image(uploaded_file)
+# ... (tu código anterior de carga de modelo y detección)
+
+if option == "En vivo":
+    st.write("Haz clic en el botón de abajo para capturar y analizar frames.")
+    img_file_buffer = st.camera_input("Streaming de detección")
+
+    if img_file_buffer is not None:
+        # Convertir a imagen PIL
+        live_img = load_image(img_file_buffer)
+
+        # Ejecutar detección
+        with st.spinner("Procesando frame..."):
+            res = detect(live_img)
+            annotated_frame = res.plot()
+
+            # Mostrar resultado
+            st.image(annotated_frame, channels="BGR", use_container_width=True)
+
+            # Mostrar lista de objetos detectados
+            items = get_detected_items(res)
+            if items:
+                st.success(f"Detección actual: {', '.join([i['clase'] for i in items])}")
 else:
     camera_file = st.camera_input("Toma una foto")
     if camera_file is not None:
