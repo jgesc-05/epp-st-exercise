@@ -7,7 +7,7 @@ from PIL import Image
 
 import streamlit as st
 from ultralytics import YOLO
-import cv2 as cv
+
 
 st.set_page_config(
     page_title="Detección PPE",
@@ -19,7 +19,7 @@ BASE_DIR = Path(__file__).resolve().parent
 MODEL_PATH = BASE_DIR / "runs" / "detect" / "train-3" / "weights" / "best.pt"
 
 
-
+@st.cache_resource(show_spinner="Cargando modelo...")
 def load_model():
     return YOLO(str(MODEL_PATH))
 
@@ -60,7 +60,7 @@ st.divider()
 st.subheader("1. Selector o capturador de imagen")
 option = st.radio(
     "Elige cómo quieres ingresar la imagen:",
-    ("Cargar imagen", "Tomar foto", "En vivo"),
+    ("Cargar imagen", "Tomar foto"),
     horizontal=True,
 )
 
@@ -73,7 +73,6 @@ if option == "Cargar imagen":
     )
     if uploaded_file is not None:
         uploaded_image = load_image(uploaded_file)
-
 else:
     camera_file = st.camera_input("Toma una foto")
     if camera_file is not None:
